@@ -1,5 +1,8 @@
 package org.myBoard.board.commons.validators;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public interface PasswordValidator {
 
     /**
@@ -11,8 +14,15 @@ public interface PasswordValidator {
      * @return
      */
     default boolean alphaCheck(String password, boolean caseIncentive) {
+        if (caseIncentive) { // 대소문자 구분없이 체크
+            Pattern pattern = Pattern.compile("[a-z]", Pattern.CASE_INSENSITIVE);
+            return pattern.matcher(password).find(); // + : 1자 이상, * : 있어도 되고 없어도 되고
+        }
 
-        return false;
+        // 대문자, 소문자 각각 체크
+        Pattern pattern1 = Pattern.compile("[a-z]");
+        Pattern pattern2 = Pattern.compile("[A-Z]");
+        return pattern1.matcher(password).find() && pattern2.matcher(password).find();
     }
 
     /**
@@ -22,8 +32,9 @@ public interface PasswordValidator {
      */
 
     default boolean numberCheck(String password) {
-
-        return false;
+        Pattern pattern = Pattern.compile("\\d+");
+        Matcher matcher = pattern.matcher(password);
+        return matcher.find();
     }
 
     /**
@@ -32,7 +43,8 @@ public interface PasswordValidator {
      * @return
      */
     default boolean specialCharsCheck(String password) {
-
-        return false;
+        Pattern pattern = Pattern.compile("[`~!#$%\\^&\\*()-_+=]+");
+        Matcher matcher = pattern.matcher(password);
+        return matcher.find();
     }
 }
