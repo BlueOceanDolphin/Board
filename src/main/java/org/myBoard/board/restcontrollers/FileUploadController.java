@@ -1,7 +1,5 @@
 package org.myBoard.board.restcontrollers;
 
-import org.myBoard.board.commons.CommonException;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,9 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class FileUploadController {
     @GetMapping("/file/upload")
     public void upload() {
-        boolean result = true;
-        if (result) {
-            throw new CommonException("예외 발생", HttpStatus.BAD_REQUEST);
-        }
+
     }
 }
