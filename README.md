@@ -42,3 +42,10 @@
 
 * 공통 오류 페이지
     - @ExceptionHander, @ControllerAdvice, @RestControllerAdvice
+
+## 4일차
+* 공통 오류 페이지 처리
+    - 일반 컨트롤러(@ControllerAdvice)
+* 관리자 페이지
+    - 사이트 설정
+    - 게시판 설정
