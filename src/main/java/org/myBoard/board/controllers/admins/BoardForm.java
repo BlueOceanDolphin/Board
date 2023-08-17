@@ -17,7 +17,7 @@ public class BoardForm { // 게시판 양식
     private String bId; // 게시판 아이디
 
     @NotBlank
-    private String bname; // 게시판명
+    private String bName; // 게시판명
 
     private boolean use; // 사용여부
 

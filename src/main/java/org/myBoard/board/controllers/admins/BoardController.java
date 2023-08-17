@@ -3,8 +3,10 @@ package org.myBoard.board.controllers.admins;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.myBoard.board.commons.CommonException;
 import org.myBoard.board.commons.MenuDetail;
 import org.myBoard.board.commons.Menus;
+import org.myBoard.board.models.board.config.BoardConfigSaveService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -16,7 +18,10 @@ import java.util.List;
 @RequestMapping("admin/board")
 @RequiredArgsConstructor
 public class BoardController {
+
     private final HttpServletRequest request;
+    private final BoardConfigSaveService boardConfigSaveService;
+
     /**
      * 게시판 목록
      *
@@ -50,6 +55,16 @@ public class BoardController {
     public String save(@Valid BoardForm boardForm, Errors errors, Model model) {
         String mode = boardForm.getMode();
         commonProcess(model, mode != null && mode.equals("update") ? "게시판 수정" : "게시판 등록");
+
+        try {
+            boardConfigSaveService.save(boardForm, errors);
+        }catch (CommonException e) {
+            errors.reject("BoardConfigError", e.getMessage());
+        }
+
+        if (errors.hasErrors()){
+            return "admin/board/config";
+        }
 
         return "redirect:/admin/board";
     }
