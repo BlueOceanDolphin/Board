@@ -3,9 +3,12 @@ package org.myBoard.board.controllers.admins;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.myBoard.board.commons.CommonException;
 import org.myBoard.board.commons.MenuDetail;
 import org.myBoard.board.commons.Menus;
+import org.myBoard.board.entities.Board;
+import org.myBoard.board.models.board.config.BoardConfigInfoService;
 import org.myBoard.board.models.board.config.BoardConfigSaveService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +24,7 @@ public class BoardController {
 
     private final HttpServletRequest request;
     private final BoardConfigSaveService boardConfigSaveService;
+    private final BoardConfigInfoService boardConfigInfoService;
 
     /**
      * 게시판 목록
@@ -48,6 +52,18 @@ public class BoardController {
     @GetMapping("/{bid}/update")
     public String update(@PathVariable String bid, Model model) {
         commonProcess(model, "게시판 수정");
+
+        Board board = boardConfigInfoService.get(bid, true);
+        BoardForm boardForm = new ModelMapper().map(board, BoardForm.class);
+        boardForm.setMode("update");
+        boardForm.setListAccessRole(board.getListAccessRole().toString());
+        boardForm.setViewAccessRole(board.getViewAccessRole().toString());
+        boardForm.setWriteAccessRole(board.getWriteAccessRole().toString());
+        boardForm.setReplyAccessRole(board.getReplyAccessRole().toString());
+        boardForm.setCommentAccessRole(board.getCommentAccessRole().toString());
+
+        model.addAttribute("boardForm", boardForm);
+
         return "admin/board/config";
     }
 
