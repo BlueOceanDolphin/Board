@@ -58,3 +58,8 @@
     - 게시판 설정
 
 ## 5일차
+
+# gameseller
+게임 판매 포트폴리오
+
+ <img src="https://img.shields.io/badge/javascript-#F7DF1E?style=flat&logo=javascript&logoColor=white"/>
